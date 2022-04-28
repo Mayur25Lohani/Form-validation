@@ -1,114 +1,73 @@
-//1.WAYS TO PRINT IN JAVASCRIPT
-//console.log("HELLO WORLD");
-//alert("HELLO PETER");
-//document.write("THIS IS DOCUMENT WRITE")
-//2.Javascript console API
-/*console.log(4+6,"ANOTHER LOG");
-console.warn("this is warning");
-console.error("this is error");*/
-//console.clear();
-//3. Javascript variables
-//Whart are variables?-containers to store data values
-// var number1 = 34;
-// var number2 = 56;
-// console.log(number1+number2);
-// console.log(number1-number2);
-// console.log(number1*number2);
-// console.log(number1/number2);
-//4.Data types in JS
-//strings
-// var str1 = "YOU ARE AMAZING";
-// var str2 = "YOU ARE ALSO AMAZING";
-//numbers
-// var num1=475;
-// var num2=56.65;
-//objects
-// var marks={
-//     a:98,
-//     b:97,
-//     c:100
-// }
-// console.log(marks);
-// //Booleans
-// var a=true;
-// var b=false;
-// console.log(a,b);
-// //var und = undefined;
-// var und;
-// console.log(und);
-// var n=null;
-// console.log(n);
-//At a ver high level there are two types of datatypes in JS
-//1.Primitive data types: undefined,null,number,string,boolean,symbol
-//2.Reference data types:Arrays and Objects
-// var arr = [1,2,"spiderman",3,4,5];
-// console.log(arr);
-// console.log(arr[2]);
-//Operators in JS
-//ARITHMETIC OPERATORS
-// var m = 45
-// var n = 9
-// console.log("THE VALUE OF a+b is",m+n);
-// console.log("THE VALUE OF a-b is",m-n);
-// console.log("THE VALUE OF a*b is",m*n);
-// console.log("THE VALUE OF a/b is",m/n);
-//Assignment operators
-// var o = n;
-// o+=1;
-// console.log(o);
-//Comparison operators
-/*var x=65;
-var y=78;
-console.log(x==y);
-console.log(x<=y);
-console.log(x>=y);
-console.log(x<y);
-console.log(x>y);*/
-//Logical operators(and,or,not)
-/*console.log(true&&true);
-console.log(true&&false);
-console.log(false&&false);
-console.log(true||false);
-console.log(!false);
-console.log(!true);*/
-//functions in JS
-//DRY=donot repeat yourself
-function avg(a, b) {
-    return (a + b) / 2;
+const form = document.getElementById("form");
+const username = document.getElementById("username");
+const email = document.getElementById("email");
+const password = document.getElementById("password");
+const cpassword = document.getElementById("cpassword");
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  checkInputs();
+});
+
+function checkInputs() {
+  //get the values from the inputs
+  const usernameValue = username.value.trim();
+  const emailValue = email.value.trim();
+  const passwordValue = password.value.trim();
+  const cpasswordValue = cpassword.value.trim();
+
+  if (usernameValue === "") {
+    //show error
+    //add error class
+    setErrorFor(username, "Username cannot be blank");
+  } else {
+    //add success class
+    setSuccessFor(username);
+  }
+  if (emailValue === "") {
+    setErrorFor(email, "Email cannot be blank");
+  } else if (!isEmail(emailValue)) {
+    setErrorFor(email, "Email is not valid");
+  } else {
+    setSuccessFor(email);
+  }
+
+  if (passwordValue === "") {
+    setErrorFor(password, "Password cannot be blank");
+  } else if (passwordValue.length < 8) {
+    setErrorFor(password, "Password should be of atleast 8 characters");
+  } else if (passwordValue.length > 16) {
+    setErrorFor(password, "Password should be of atmost 16 characters");
+  } else {
+    setSuccessFor(password);
+  }
+
+  if (cpasswordValue === "") {
+    setErrorFor(cpassword, "Password cannot be blank");
+  } else if (passwordValue != cpasswordValue) {
+    setErrorFor(cpassword, "Passwords doesnot match");
+  } else {
+    setSuccessFor(cpassword);
+  }
 }
-c1 = avg(4, 6);
-c2 = avg(14, 16);
-// console.log(c1);
-// console.log(c2);
-//conditions in JS
-// var age = 60;
-// if(age<=18){
-//     console.log("You are a tenager");
-// }
-// else{
-//     console.log("You are not a teenager");
-// }
-// var arr1 = [1, 2, 3, 4, 5, 6, 7];
-// //     // console.log(arr1);
-// for(var i=0;i<arr1.length;++i){
-//     if(i==2){
-//         //break;
-//         continue;
-//     }
-//     console.log(arr1[i]);
 
-//}
-// arr1.forEach(function(element){
-//     console.log(element);
-// })
-// let j = 0;
-// // while (j<arr1.length){
-// //     console.log(arr1[j]);
-// //     j++
-// // }
-// do{
-//     console.log(arr1[j]);
-//     j++
-// }while(j<arr1.length);
+function setErrorFor(input, message) {
+  const formControl = input.parentElement; // .form-control
+  const small = formControl.querySelector("small");
 
+  //add error message inside small
+  small.innerText = message;
 
+  //add error class
+  formControl.className = "form-control error";
+}
+
+function setSuccessFor(input) {
+  const formControl = input.parentElement;
+  formControl.className = "form-control success";
+}
+
+function isEmail(email) {
+  return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email);
+}
